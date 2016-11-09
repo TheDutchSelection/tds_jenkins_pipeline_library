@@ -1,5 +1,11 @@
 package tds.jenkins
 
+def buildDockerImage(registryAddress, name, tag) {
+  docker.withRegistry(registryAddress) {
+    docker.build(name + '/' + tag)
+  }
+}
+
 def cleanupOldDockerImages() {
   sh 'docker rmi $(/usr/bin/docker images -q -f "dangling=true") || true'
 }
