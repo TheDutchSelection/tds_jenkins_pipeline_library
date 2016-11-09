@@ -34,6 +34,12 @@ def pushDockerImage(registryAddress, name, tag) {
   docker.image(registryAddress + '/' + name + ':' + tag).push(tag)
 }
 
+def runPostgresql() {
+  postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
+
+  return postgresqlImage.run('-l "test" -e "DATA_DIRECTORY=/home/postgresql/data" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" -p :5432 -p :5432/udp')
+}
+
 def setPipelineProperties() {
   properties(
     [

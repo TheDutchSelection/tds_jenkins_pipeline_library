@@ -16,6 +16,14 @@ def getPostgresqlImageTag() {
   return '9.4.8'
 }
 
+def getPostgresqlTestPassword() {
+  return 'test123test'
+}
+
+def getPostresqlTestUsername() {
+  return 'test'
+}
+
 def getRedisImageName() {
   return 'thedutchselection/redis'
 }
