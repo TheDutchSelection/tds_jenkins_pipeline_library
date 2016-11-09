@@ -25,5 +25,5 @@ def getRedisImageTag() {
 }
 
 def getRedisImageNamePlusTag() {
-  return getRedisImageName() + ':' + getRedisImageTag()
+  return redisImageName + ':' + redisImageTag()
 }
