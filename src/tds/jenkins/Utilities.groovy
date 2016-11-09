@@ -49,7 +49,7 @@ def runPostgresql(label) {
 
   postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
   postgresqlContainer = postgresqlImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" --volumes-from ' + dataContainer.id + ' -p :5432 -p :5432/udp')
-  sleep(5000) // give the database some time
+  sleep(5) // give the database some time
 
   return postgresqlContainer
 }
