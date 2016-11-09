@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def pullGeneralDockerImages() {
-  docker.image(tdsJenkinsGlobals.redisImageName + tdsJenkinsGlobals.redisImageTag).pull()
+  docker.image(tdsJenkinsGlobals.redisImageNamePlusTag).pull()
 }
 
 def setPipelineProperties() {
