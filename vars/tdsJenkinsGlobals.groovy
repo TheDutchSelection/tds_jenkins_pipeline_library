@@ -20,7 +20,7 @@ def getPostgresqlTestPassword() {
   return 'test123test'
 }
 
-def getPostresqlTestUsername() {
+def getPostgresqlTestUsername() {
   return 'test'
 }
 
