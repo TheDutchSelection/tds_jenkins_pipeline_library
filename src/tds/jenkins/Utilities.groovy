@@ -4,7 +4,7 @@ def cleanupOldDockerImages() {
   sh 'docker rmi $(/usr/bin/docker images -q -f "dangling=true") || true'
 }
 
-cleanupOldDockerTestContainers() {
+def cleanupOldDockerTestContainers() {
   sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=test-container") || true'
 }
 
