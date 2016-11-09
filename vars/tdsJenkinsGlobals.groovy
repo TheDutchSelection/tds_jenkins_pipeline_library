@@ -23,7 +23,3 @@ def getRedisImageName() {
 def getRedisImageTag() {
   return '3.2.5'
 }
-
-def getRedisImageNamePlusTag() {
-  return redisImageName + ':' + redisImageTag
-}
