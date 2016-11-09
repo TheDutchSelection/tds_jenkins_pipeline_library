@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  docker.build(registryAddress + name + ':' + tag)
+  docker.build(registryAddress + '/' + name + ':' + tag)
 }
 
 def cleanupDanglingDockerImages() {
@@ -9,7 +9,7 @@ def cleanupDanglingDockerImages() {
 }
 
 def cleanupDockerImage(registryAddress, name, tag) {
-  sh "docker rmi ${registryAddress + name + ':' + tag}"
+  sh "docker rmi ${registryAddress + '/' + name + ':' + tag}"
 }
 
 def cleanupOldDockerTestContainers() {
@@ -31,7 +31,7 @@ def pullDockerImage(imageName, imageTag) {
 }
 
 def pushDockerImage(registryAddress, name, tag) {
-  docker.image(dockerRegistryName(registryAddress) + name + ':' + tag).push(tag)
+  docker.image(registryAddress + '/' + name + ':' + tag).push(tag)
 }
 
 def setPipelineProperties() {
