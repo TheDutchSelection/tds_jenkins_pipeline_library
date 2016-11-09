@@ -13,7 +13,7 @@ def cleanupDockerImage(registryAddress, name, tag) {
 }
 
 def cleanupOldDockerTestContainers() {
-  sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=test-container") || true'
+  sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=test") || true'
 }
 
 def dockerRegistryName(registryAddress) {
