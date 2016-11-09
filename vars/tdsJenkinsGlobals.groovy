@@ -1,5 +1,13 @@
 #!groovy
 
+def getDataContainerImageName() {
+  return 'thedutchselection/data'
+}
+
+def getDataContainerImageTag() {
+  return 'latest'
+}
+
 def getElasticsearchImageName() {
   return 'thedutchselection/elasticsearch'
 }

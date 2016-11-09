@@ -12,8 +12,8 @@ def cleanupDockerImage(registryAddress, name, tag) {
   sh "docker rmi ${registryAddress + '/' + name + ':' + tag} || true"
 }
 
-def cleanupOldDockerTestContainers() {
-  sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=test") || true'
+def cleanupDockerContainers(label) {
+  sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=' + label + '") || true'
 }
 
 def dockerRegistryName(registryAddress) {
@@ -21,6 +21,7 @@ def dockerRegistryName(registryAddress) {
 }
 
 def pullGeneralDockerImages() {
+  pullDockerImage(tdsJenkinsGlobals.dataContainerImageName, tdsJenkinsGlobals.dataContainerImageTag)
   pullDockerImage(tdsJenkinsGlobals.elasticsearchImageName, tdsJenkinsGlobals.elasticsearchImageTag)
   pullDockerImage(tdsJenkinsGlobals.postgresqlImageName, tdsJenkinsGlobals.postgresqlImageTag)
   pullDockerImage(tdsJenkinsGlobals.redisImageName, tdsJenkinsGlobals.redisImageTag)
@@ -34,9 +35,17 @@ def pushDockerImage(registryAddress, name, tag) {
   docker.image(registryAddress + '/' + name + ':' + tag).push(tag)
 }
 
-def runPostgresql() {
+def runDataContainer(userId, groupId, dataDirectory, label) {
+  dataContainerImage = docker.image(tdsJenkinsGlobals.dataContainerImageName + ':' + tdsJenkinsGlobals.dataContainerImageTag)
+  return dataContainerImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "USER_ID=' + userId + '" -e "GROUP_ID=' + groupId + '" -v "' + dataDirectory + '"')
+}
+
+def runPostgresql(label) {
+  dataDirectory = '/home/postgresql/data'
+  dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
+
   postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
-  return postgresqlImage.run('-l "test" -e "DATA_DIRECTORY=/home/postgresql/data" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" -p :5432 -p :5432/udp')
+  return postgresqlImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" -p :5432 -p :5432/udp')
 }
 
 def setPipelineProperties() {
