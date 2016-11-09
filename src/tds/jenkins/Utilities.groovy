@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def pullGeneralDockerImages() {
-  docker.image('thedutchselection/postgresql:9.4.8').pull
+  docker.image('thedutchselection/postgresql:9.4.8').pull()
 }
 
 def setPipelineProperties() {
