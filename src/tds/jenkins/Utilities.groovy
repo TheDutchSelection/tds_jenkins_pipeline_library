@@ -1,5 +1,9 @@
 package tds.jenkins
 
+def cleanupOldDockerImages() {
+  sh "docker rmi $(/usr/bin/docker images -q -f 'dangling=true') || true"
+}
+
 def pullGeneralDockerImages() {
   pullDockerImage(tdsJenkinsGlobals.elasticsearchImageName, tdsJenkinsGlobals.elasticsearchImageTag)
   pullDockerImage(tdsJenkinsGlobals.postgresqlImageName, tdsJenkinsGlobals.postgresqlImageTag)
