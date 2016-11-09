@@ -4,7 +4,7 @@ def getElasticsearchImageName() {
   return 'thedutchselection/elasticsearch'
 }
 
-def getElasticsearchImageTage() {
+def getElasticsearchImageTag() {
   return '2.3.3'
 }
 
@@ -12,7 +12,7 @@ def getPostgresqlImageName() {
   return 'thedutchselection/postgresql'
 }
 
-def getPostgresqlImageTage() {
+def getPostgresqlImageTag() {
   return '9.4.8'
 }
 

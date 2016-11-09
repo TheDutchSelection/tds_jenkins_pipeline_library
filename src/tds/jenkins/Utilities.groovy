@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def pullGeneralDockerImages() {
-  docker.image('thedutchselection/postgresql:9.4.8').pull()
+  docker.image(tdsJenkinsGlobals.redisImageName + tdsJenkinsGlobals.redisImageTag).pull()
 }
 
 def setPipelineProperties() {
