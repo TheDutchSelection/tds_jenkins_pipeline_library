@@ -23,13 +23,3 @@ def getRedisImageName() {
 def getRedisImageTage() {
   return '3.2.5'
 }
-
-def setPipelineProperties() {
-  properties(
-    [
-      pipelineTriggers([[$class: 'GitHubPushTrigger']]),
-      [$class: 'BuildDiscarderProperty', strategy: [$class: 'LogRotator', daysToKeepStr: '30', numToKeepStr: '3']],
-      [$class: 'DisableConcurrentBuildsJobProperty']
-    ]
-  )
-}
