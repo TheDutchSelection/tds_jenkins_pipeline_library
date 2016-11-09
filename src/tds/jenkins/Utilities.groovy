@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def cleanupOldDockerImages() {
-  sh "${/usr/bin/docker images -q -f 'dangling=true'}"
+  sh "${docker images -q -f 'dangling=true'}"
   // sh "docker rmi $(/usr/bin/docker images -q -f 'dangling=true') || true"
 }
 
