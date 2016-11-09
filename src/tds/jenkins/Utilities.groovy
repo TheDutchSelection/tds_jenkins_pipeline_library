@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  docker.build(dockerRegistryName(registryAddress) + name + ':' + tag)
+  docker.build(registryAddress + name + ':' + tag)
 }
 
 def cleanupDanglingDockerImages() {
@@ -9,7 +9,7 @@ def cleanupDanglingDockerImages() {
 }
 
 def cleanupDockerImage(registryAddress, name, tag) {
-  sh "docker rmi ${dockerRegistryName(registryAddress) + name + ':' + tag}"
+  sh "docker rmi ${registryAddress + name + ':' + tag}"
 }
 
 def cleanupOldDockerTestContainers() {
