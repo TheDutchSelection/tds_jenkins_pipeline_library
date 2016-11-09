@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  docker.withRegistry(registryAddress) {
+  docker.withRegistry('http://' + registryAddress + '/') {
     docker.build(name + ':' + tag)
   }
 }
