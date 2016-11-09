@@ -1,17 +1,23 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  docker.withRegistry('http://' + registryAddress + '/') {
-    docker.build(name + ':' + tag).push(tag)
-  }
+  docker.build(dockerRegistryName(registryAddress) + name + ':' + tag)
 }
 
-def cleanupOldDockerImages() {
+def cleanupDanglingDockerImages() {
   sh 'docker rmi $(/usr/bin/docker images -q -f "dangling=true") || true'
+}
+
+def cleanupDockerImage(registryAddress, name, tag) {
+  sh "docker rmi ${dockerRegistryName(registryAddress) + name + ':' + tag}"
 }
 
 def cleanupOldDockerTestContainers() {
   sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=test-container") || true'
+}
+
+def dockerRegistryName(registryAddress) {
+  return 'http://' + registryAddress + '/'
 }
 
 def pullGeneralDockerImages() {
@@ -22,6 +28,10 @@ def pullGeneralDockerImages() {
 
 def pullDockerImage(imageName, imageTag) {
   docker.image(imageName + ':' + imageTag).pull()
+}
+
+def pushDockerImage(registryAddress, name, tag) {
+  docker.image(dockerRegistryName(registryAddress) + name + ':' + tag).push(tag)
 }
 
 def setPipelineProperties() {
