@@ -13,7 +13,7 @@ def cleanupDockerImage(registryAddress, name, tag) {
 }
 
 def cleanupDockerContainers(label) {
-  sh 'docker rm -v $(/usr/bin/docker ps -q -f "status=exited" -f "label=' + label + '") || true'
+  sh 'docker rm -f -v $(/usr/bin/docker ps -q -f "label=' + label + '") || true'
 }
 
 def dockerRegistryName(registryAddress) {
@@ -37,8 +37,13 @@ def pushDockerImage(registryAddress, name, tag) {
 
 def runDataContainer(userId, groupId, dataDirectory, label) {
   dataContainerImage = docker.image(tdsJenkinsGlobals.dataContainerImageName + ':' + tdsJenkinsGlobals.dataContainerImageTag)
-
-  dataContainerContainer = dataContainerImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "USER_ID=' + userId + '" -e "GROUP_ID=' + groupId + '" -v "' + dataDirectory + '"')
+  dataContainerContainer = dataContainerImage.run(
+    '-l "' + label + '" ' +
+    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
+    '-e "USER_ID=' + userId + '" ' +
+    '-e "GROUP_ID=' + groupId + '" ' +
+    '-v "' + dataDirectory + '"'
+  )
 
   return dataContainerContainer
 }
@@ -49,13 +54,13 @@ def runPostgresql(label) {
 
   postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
   postgresqlContainer = postgresqlImage.run(
-                                             '-l "' + label + '" ' +
-                                             '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
-                                             '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
-                                             '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
-                                             '--volumes-from ' + dataContainer.id + ' ' +
-                                             '-p :5432 -p :5432/udp'
-                                           )
+    '-l "' + label + '" ' +
+    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
+    '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
+    '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
+    '--volumes-from ' + dataContainer.id + ' ' +
+    '-p :5432 -p :5432/udp'
+  )
   sleep(5) // give the database some time
 
   return postgresqlContainer
