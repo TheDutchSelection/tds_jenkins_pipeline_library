@@ -37,7 +37,10 @@ def pushDockerImage(registryAddress, name, tag) {
 
 def runDataContainer(userId, groupId, dataDirectory, label) {
   dataContainerImage = docker.image(tdsJenkinsGlobals.dataContainerImageName + ':' + tdsJenkinsGlobals.dataContainerImageTag)
-  return dataContainerImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "USER_ID=' + userId + '" -e "GROUP_ID=' + groupId + '" -v "' + dataDirectory + '"')
+
+  dataContainerContainer = dataContainerImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "USER_ID=' + userId + '" -e "GROUP_ID=' + groupId + '" -v "' + dataDirectory + '"')
+
+  return dataContainerContainer
 }
 
 def runPostgresql(label) {
@@ -45,7 +48,10 @@ def runPostgresql(label) {
   dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
 
   postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
-  return postgresqlImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" -p :5432 -p :5432/udp')
+  postgresqlContainer = postgresqlImage.run('-l "' + label + '" -e "DATA_DIRECTORY=' + dataDirectory + '" -e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" -e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" --volumes-from ' + dataContainer.id + ' -p :5432 -p :5432/udp')
+  sleep(5000) // give the database some time
+
+  return postgresqlContainer
 }
 
 def setPipelineProperties() {
