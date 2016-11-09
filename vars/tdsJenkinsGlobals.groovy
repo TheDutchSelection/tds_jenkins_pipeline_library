@@ -20,6 +20,6 @@ def getRedisImageName() {
   return 'thedutchselection/redis'
 }
 
-def getRedisImageTage() {
+def getRedisImageTag() {
   return '3.2.5'
 }
