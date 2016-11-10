@@ -13,7 +13,7 @@ def cleanupDockerImage(registryAddress, name, tag) {
 }
 
 def cleanupDockerContainers(label) {
-  sh 'docker rm -f -v $(/usr/bin/docker ps -q -f "label=' + label + '") || true'
+  sh 'docker rm -f -v $(/usr/bin/docker ps -a -q -f "label=' + label + '") || true'
 }
 
 def dockerRegistryName(registryAddress) {
