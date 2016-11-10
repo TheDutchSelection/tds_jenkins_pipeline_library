@@ -29,7 +29,7 @@ def dockerContainerIp(container) {
 }
 
 def dockerContainerPort(container, port) {
-  result = sh "docker inspect --format '{{(index (index .NetworkSettings.Ports " + port + ") 0).HostPort }}' " + container.id
+  result = sh "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id
 
   return result
 }
