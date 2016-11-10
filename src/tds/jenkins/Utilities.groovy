@@ -23,11 +23,21 @@ def dockerRegistryName(registryAddress) {
 }
 
 def dockerContainerIp(container) {
-  sh "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id
+  result = sh(
+    script: "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id,
+    returnStdout: true
+  ).trim()
+
+  return result
 }
 
 def dockerContainerPort(container, port) {
-  sh "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id
+  result = sh(
+    script: "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id,
+    returnStdout: true
+  ).trim()
+  
+  return result
 }
 
 def pullGeneralDockerImages() {
