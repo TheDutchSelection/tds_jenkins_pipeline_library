@@ -26,7 +26,7 @@ def deployApp(redisAppName, redisEnv) {
   def command = "bash /usr/local/bin/deploy_app.sh"
   def env = ['REDIS_APP="beladvies_nl"', 'REDIS_APP_ENV="wrkprd"']
 
-  println command.execute(env).text
+  println command.execute().text
 }
 
 def dockerContainerIp(container) {
