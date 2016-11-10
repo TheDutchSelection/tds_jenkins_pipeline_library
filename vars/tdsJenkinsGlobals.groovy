@@ -39,3 +39,7 @@ def getRedisImageName() {
 def getRedisImageTag() {
   return '3.2.5'
 }
+
+def getStandardRspecOpts() {
+  return '--backtrace --fail-fast'
+}

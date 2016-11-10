@@ -87,7 +87,3 @@ def setPipelineProperties() {
     ]
   )
 }
-
-def standardRspecOpts() {
-  return '--backtrace --fail-fast'
-}
