@@ -23,15 +23,11 @@ def dockerRegistryName(registryAddress) {
 }
 
 def dockerContainerIp(container) {
-  result = sh "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id
-
-  return result
+  sh "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id
 }
 
 def dockerContainerPort(container, port) {
-  result = sh "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id
-
-  return result
+  sh "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id
 }
 
 def pullGeneralDockerImages() {
