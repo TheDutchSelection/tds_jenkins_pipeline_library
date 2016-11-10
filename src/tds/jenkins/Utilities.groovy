@@ -1,7 +1,9 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  docker.build(registryAddress + '/' + name + ':' + tag)
+  result = docker.build(registryAddress + '/' + name + ':' + tag)
+
+  return result
 }
 
 def cleanupDanglingDockerImages() {
