@@ -1,7 +1,7 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag) {
-  result = docker.build(registryAddress + '/' + name + ':' + tag)
+  def result = docker.build(registryAddress + '/' + name + ':' + tag)
 
   return result
 }
@@ -22,8 +22,15 @@ def dockerRegistryName(registryAddress) {
   return 'http://' + registryAddress + '/'
 }
 
+def deployApp(redisAppName, redisEnv) {
+  def command = "bash /usr/local/bin/deploy_app.sh"
+  def env = ['REDIS_APP="beladvies_nl"', 'REDIS_APP_ENV="wrkprd"']
+
+  println command.execute(env).text
+}
+
 def dockerContainerIp(container) {
-  result = sh(
+  def result = sh(
     script: "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id,
     returnStdout: true
   ).trim()
@@ -32,7 +39,7 @@ def dockerContainerIp(container) {
 }
 
 def dockerContainerPort(container, port) {
-  result = sh(
+  def result = sh(
     script: "docker inspect --format '{{(index (index .NetworkSettings.Ports \"" + port + "\") 0).HostPort }}' " + container.id,
     returnStdout: true
   ).trim()
@@ -51,13 +58,9 @@ def pullDockerImage(imageName, imageTag) {
   docker.image(imageName + ':' + imageTag).pull()
 }
 
-def pushDockerImage(registryAddress, name, tag) {
-  docker.image(registryAddress + '/' + name + ':' + tag).push(tag)
-}
-
 def runDataContainer(userId, groupId, dataDirectory, label) {
-  dataContainerImage = docker.image(tdsJenkinsGlobals.dataContainerImageName + ':' + tdsJenkinsGlobals.dataContainerImageTag)
-  dataContainerContainer = dataContainerImage.run(
+  def dataContainerImage = docker.image(tdsJenkinsGlobals.dataContainerImageName + ':' + tdsJenkinsGlobals.dataContainerImageTag)
+  def dataContainerContainer = dataContainerImage.run(
     '-l "' + label + '" ' +
     '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
     '-e "USER_ID=' + userId + '" ' +
@@ -69,11 +72,11 @@ def runDataContainer(userId, groupId, dataDirectory, label) {
 }
 
 def runPostgresql(label) {
-  dataDirectory = '/home/postgresql/data'
-  dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
+  def dataDirectory = '/home/postgresql/data'
+  def dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
 
-  postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
-  postgresqlContainer = postgresqlImage.run(
+  def postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
+  def postgresqlContainer = postgresqlImage.run(
     '-l "' + label + '" ' +
     '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
     '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
