@@ -20,6 +20,18 @@ def dockerRegistryName(registryAddress) {
   return 'http://' + registryAddress + '/'
 }
 
+def dockerContainerIp(container) {
+  result = sh "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id
+
+  return result
+}
+
+def dockerContainerPort(container, port) {
+  result = sh "docker inspect --format '{{(index (index .NetworkSettings.Ports " + port + ") 0).HostPort }}' " + container.id
+
+  return result
+}
+
 def pullGeneralDockerImages() {
   pullDockerImage(tdsJenkinsGlobals.dataContainerImageName, tdsJenkinsGlobals.dataContainerImageTag)
   pullDockerImage(tdsJenkinsGlobals.elasticsearchImageName, tdsJenkinsGlobals.elasticsearchImageTag)
@@ -74,4 +86,8 @@ def setPipelineProperties() {
       [$class: 'DisableConcurrentBuildsJobProperty']
     ]
   )
+}
+
+def standardRspecOpts() {
+  return '--backtrace --fail-fast'
 }
