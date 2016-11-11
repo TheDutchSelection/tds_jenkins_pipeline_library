@@ -69,21 +69,35 @@ def runDataContainer(userId, groupId, dataDirectory, label) {
 }
 
 def runElasticsearch(label) {
-  def dataDirectory = '/home/postgresql/data'
-  def dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
+  def dataDirectory = '/home/elastic/data'
+  def dataContainer = runDataContainer('9200', '9200', dataDirectory, label)
 
-  def postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
-  def postgresqlContainer = postgresqlImage.run(
+  def elasticsearchImage = docker.image(tdsJenkinsGlobals.elasticsearchImageName + ':' + tdsJenkinsGlobals.elasticsearchImageTag)
+  def elasticsearchContainer = elasticsearchImage.run(
     '-l "' + label + '" ' +
+    '-e "CLUSTER_NAME=test" ' +
     '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
-    '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
-    '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
+    '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
+    '-e "NODE_NAME=test_node" ' +
+    '-e "NODE_MASTER=true" ' +
+    '-e "NODE_DATA=true" ' +
+    '-e "MAX_LOCAL_STORAGE_NODES=1" ' +
+    '-e "MINIMUM_MASTER_NODES=1" ' +
+    '-e "MINIMUM_NUMBER_OF_NODES=1" ' +
+    '-e "NUMBER_OF_SHARDS=5" ' +
+    '-e "NUMBER_OF_REPLICAS=0" ' +
+    '-e "PATH_DATA=/home/elastic/data/data" ' +
+    '-e "PATH_LOGS=/home/elastic/data/logs" ' +
+    '-e "PATH_REPO=/home/elastic/data/backups" ' +
+    '-e "PUBLISH_HOST=0.0.0.0" ' +
+    '-e "TRANSPORT_PORT=9300" ' +
+    '-e "HTTP_PORT=9200" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
-    '-p :5432 -p :5432/udp'
+    '-p :9200 -p :9200/udp'
   )
-  sleep(5) // give the database some time
+  sleep(1) // give elasticsearch some time
 
-  return postgresqlContainer
+  return elasticsearchContainer
 }
 
 def runPostgresql(label) {
