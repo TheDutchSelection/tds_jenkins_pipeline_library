@@ -23,10 +23,12 @@ def dockerRegistryName(registryAddress) {
 }
 
 def deployApp(redisAppName, redisEnv) {
+  def currentPath = System.getProperty("user.dir")
+  def directory = new File(currentPath)
+  def env = ["REDIS_APP=beladvies_nl", "REDIS_APP_ENV=wrkprd"] as String[]
   def command = "bash /usr/local/bin/deploy_app.sh"
-  def env = ["REDIS_APP=beladvies_nl", "REDIS_APP_ENV=wrkprd"]
 
-  println command.execute(env).text
+  println command.execute(env, directory).text
 }
 
 def dockerContainerIp(container) {
