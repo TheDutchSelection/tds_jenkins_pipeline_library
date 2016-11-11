@@ -22,18 +22,8 @@ def dockerRegistryName(registryAddress) {
   return 'http://' + registryAddress + '/'
 }
 
-def deployApp(redisAppName, redisEnv) {
-  def currentPath = System.getProperty("user.dir")
-  def directory = new File(currentPath)
-  def env = System.getenv();
-  def envList = []
-  env.each() { k,v -> envList.push( "$k=$v" ) }
-  envList.push("REDIS_APP=beladvies_nl")
-  envList.push("REDIS_APP_ENV=wrkprd")
-  envList.each() { k,v -> echo(k + ' - ' + v) }
-  def command = "bash /usr/local/bin/deploy_app.sh"
-
-  println command.execute(envList, directory).text
+def deployApp(redisApp, redisAppEnv) {
+  sh "REDIS_APP_ENV=${redisAppEnv} REDIS_APP=${redisApp} bash /usr/local/bin/deploy_app.sh"
 }
 
 def dockerContainerIp(container) {
