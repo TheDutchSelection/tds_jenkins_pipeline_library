@@ -68,6 +68,24 @@ def runDataContainer(userId, groupId, dataDirectory, label) {
   return dataContainerContainer
 }
 
+def runElasticsearch(label) {
+  def dataDirectory = '/home/postgresql/data'
+  def dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
+
+  def postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
+  def postgresqlContainer = postgresqlImage.run(
+    '-l "' + label + '" ' +
+    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
+    '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
+    '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
+    '--volumes-from ' + dataContainer.id + ' ' +
+    '-p :5432 -p :5432/udp'
+  )
+  sleep(5) // give the database some time
+
+  return postgresqlContainer
+}
+
 def runPostgresql(label) {
   def dataDirectory = '/home/postgresql/data'
   def dataContainer = runDataContainer('5432', '5432', dataDirectory, label)
@@ -84,6 +102,22 @@ def runPostgresql(label) {
   sleep(5) // give the database some time
 
   return postgresqlContainer
+}
+
+def runRedis(label) {
+  def dataDirectory = '/home/redis/data'
+  def dataContainer = runDataContainer('6379', '6379', dataDirectory, label)
+
+  def redisImage = docker.image(tdsJenkinsGlobals.redisImageName + ':' + tdsJenkinsGlobals.redisImageTag)
+  def redisContainer = redisImage.run(
+    '-l "' + label + '" ' +
+    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
+    '--volumes-from ' + dataContainer.id + ' ' +
+    '-p :6379 -p :6379/udp'
+  )
+  sleep(1) // give redis some time
+
+  return redisContainer
 }
 
 def setPipelineProperties() {
