@@ -26,12 +26,13 @@ def deployApp(redisAppName, redisEnv) {
   def currentPath = System.getProperty("user.dir")
   def directory = new File(currentPath)
   def env = System.getenv();
-  def envList = ["REDIS_APP=beladvies_nl", "REDIS_APP_ENV=wrkprd"] as String[]
+  def envList = []
   env.each() { k,v -> envList.push( "$k=$v" ) }
-
+  envList.push("REDIS_APP=beladvies_nl")
+  envList.push("REDIS_APP_ENV=wrkprd")
   def command = "bash /usr/local/bin/deploy_app.sh"
 
-  println command.execute(env, directory).text
+  println command.execute(envList, directory).text
 }
 
 def dockerContainerIp(container) {
