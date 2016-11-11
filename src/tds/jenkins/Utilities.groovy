@@ -95,3 +95,10 @@ def setPipelineProperties() {
     ]
   )
 }
+
+def standardPipelineSetup(dependentImageName, dependentImageTag) {
+  setPipelineProperties()
+  pullGeneralDockerImages()
+  pullDockerImage(dependentImageName, dependentImageTag)
+  cleanupDanglingDockerImages()
+}
