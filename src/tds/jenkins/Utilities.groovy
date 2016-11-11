@@ -78,6 +78,7 @@ def runElasticsearch(label) {
     '-e "CLUSTER_NAME=test" ' +
     '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
     '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
+    '-e "HOST=0.0.0.0" ' +
     '-e "NODE_NAME=test_node" ' +
     '-e "NODE_MASTER=true" ' +
     '-e "NODE_DATA=true" ' +
