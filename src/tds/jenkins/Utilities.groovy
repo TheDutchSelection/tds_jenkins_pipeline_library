@@ -24,9 +24,9 @@ def dockerRegistryName(registryAddress) {
 
 def deployApp(redisAppName, redisEnv) {
   def command = "bash /usr/local/bin/deploy_app.sh"
-  def env = ['REDIS_APP="beladvies_nl"', 'REDIS_APP_ENV="wrkprd"']
+  def env = ["REDIS_APP=beladvies_nl", "REDIS_APP_ENV=wrkprd"]
 
-  println command.execute().text
+  println command.execute(env).text
 }
 
 def dockerContainerIp(container) {
