@@ -30,7 +30,7 @@ def deployApp(redisAppName, redisEnv) {
   env.each() { k,v -> envList.push( "$k=$v" ) }
   envList.push("REDIS_APP=beladvies_nl")
   envList.push("REDIS_APP_ENV=wrkprd")
-  envList.each() { k,v -> echo(k + ' - ' v) }
+  envList.each() { k,v -> echo(k + ' - ' + v) }
   def command = "bash /usr/local/bin/deploy_app.sh"
 
   println command.execute(envList, directory).text
