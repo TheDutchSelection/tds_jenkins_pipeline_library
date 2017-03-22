@@ -21,7 +21,7 @@ def getPostgresqlImageName() {
 }
 
 def getPostgresqlImageTag() {
-  return '9.4.8'
+  return '9.6.2'
 }
 
 def getPostgresqlTestPassword() {
