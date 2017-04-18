@@ -75,18 +75,21 @@ def runElasticsearch(label) {
   def elasticsearchImage = docker.image(tdsJenkinsGlobals.elasticsearchImageName + ':' + tdsJenkinsGlobals.elasticsearchImageTag)
   def elasticsearchContainer = elasticsearchImage.run(
     '-l "' + label + '" ' +
+    '--cap-add=IPC_LOCK ' +
+    '--ulimit memlock=-1:-1 ' +
+    '--ulimit nofile=65536:65536 ' +
     '-e "CLUSTER_NAME=test" ' +
     '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
     '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
     '-e "HOST=0.0.0.0" ' +
+    '-e "ES_JAVA_OPTS=-Xms1g -Xmx1g" ' +
     '-e "NODE_NAME=test_node" ' +
+    '-e "NODE_INGEST=true" ' +
     '-e "NODE_MASTER=true" ' +
     '-e "NODE_DATA=true" ' +
     '-e "MAX_LOCAL_STORAGE_NODES=1" ' +
     '-e "MINIMUM_MASTER_NODES=1" ' +
     '-e "MINIMUM_NUMBER_OF_NODES=1" ' +
-    '-e "NUMBER_OF_SHARDS=5" ' +
-    '-e "NUMBER_OF_REPLICAS=0" ' +
     '-e "PATH_DATA=/home/elastic/data/data" ' +
     '-e "PATH_LOGS=/home/elastic/data/logs" ' +
     '-e "PATH_REPO=/home/elastic/data/backups" ' +
