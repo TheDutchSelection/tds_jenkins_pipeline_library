@@ -78,24 +78,24 @@ def runElasticsearch(label) {
     '--cap-add=IPC_LOCK ' +
     '--ulimit memlock=-1:-1 ' +
     '--ulimit nofile=65536:65536 ' +
-    '-e "CLUSTER_NAME=test" ' +
-    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
-    '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
-    '-e "HOST=0.0.0.0" ' +
-    '-e "ES_JAVA_OPTS=-Xms1g -Xmx1g" ' +
-    '-e "NODE_NAME=test_node" ' +
-    '-e "NODE_INGEST=true" ' +
-    '-e "NODE_MASTER=true" ' +
-    '-e "NODE_DATA=true" ' +
-    '-e "MAX_LOCAL_STORAGE_NODES=1" ' +
-    '-e "MINIMUM_MASTER_NODES=1" ' +
-    '-e "MINIMUM_NUMBER_OF_NODES=1" ' +
-    '-e "PATH_DATA=/home/elastic/data/data" ' +
-    '-e "PATH_LOGS=/home/elastic/data/logs" ' +
-    '-e "PATH_REPO=/home/elastic/data/backups" ' +
-    '-e "PUBLISH_HOST=0.0.0.0" ' +
-    '-e "TRANSPORT_PORT=9300" ' +
-    '-e "HTTP_PORT=9200" ' +
+    '-e CLUSTER_NAME="test" ' +
+    '-e DATA_DIRECTORY="' + dataDirectory + '" ' +
+    '-e EXPECTED_NUMBER_OF_NODES="1" ' +
+    '-e HOST="0.0.0.0" ' +
+    '-e ES_JAVA_OPTS="-Xms1g -Xmx1g" ' +
+    '-e NODE_NAME="test_node" ' +
+    '-e NODE_INGEST="true" ' +
+    '-e NODE_MASTER="true" ' +
+    '-e NODE_DATA="true" ' +
+    '-e MAX_LOCAL_STORAGE_NODES="1" ' +
+    '-e MINIMUM_MASTER_NODES="1" ' +
+    '-e MINIMUM_NUMBER_OF_NODES="1" ' +
+    '-e PATH_DATA="/home/elastic/data/data" ' +
+    '-e PATH_LOGS="/home/elastic/data/logs" ' +
+    '-e PATH_REPO="/home/elastic/data/backups" ' +
+    '-e PUBLISH_HOST="0.0.0.0" ' +
+    '-e TRANSPORT_PORT="9300" ' +
+    '-e HTTP_PORT="9200" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :9200 -p :9200/udp'
   )
@@ -111,9 +111,9 @@ def runPostgresql(label) {
   def postgresqlImage = docker.image(tdsJenkinsGlobals.postgresqlImageName + ':' + tdsJenkinsGlobals.postgresqlImageTag)
   def postgresqlContainer = postgresqlImage.run(
     '-l "' + label + '" ' +
-    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
-    '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
-    '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
+    '-e DATA_DIRECTORY="' + dataDirectory + '" ' +
+    '-e SUPERUSER_USERNAME="' + tdsJenkinsGlobals.postgresqlTestUsername + '" ' +
+    '-e SUPERUSER_PASSWORD="' + tdsJenkinsGlobals.postgresqlTestPassword + '" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :5432 -p :5432/udp'
   )
@@ -129,7 +129,7 @@ def runRedis(label) {
   def redisImage = docker.image(tdsJenkinsGlobals.redisImageName + ':' + tdsJenkinsGlobals.redisImageTag)
   def redisContainer = redisImage.run(
     '-l "' + label + '" ' +
-    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
+    '-e DATA_DIRECTORY="' + dataDirectory + '" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :6379 -p :6379/udp'
   )
