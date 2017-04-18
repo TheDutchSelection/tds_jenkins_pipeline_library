@@ -13,7 +13,7 @@ def getElasticsearchImageName() {
 }
 
 def getElasticsearchImageTag() {
-  return '2.3.3'
+  return '5.3.0'
 }
 
 def getPostgresqlImageName() {
