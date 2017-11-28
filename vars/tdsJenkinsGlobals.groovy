@@ -37,7 +37,7 @@ def getRedisImageName() {
 }
 
 def getRedisImageTag() {
-  return '3.2.5'
+  return '4.0.2'
 }
 
 def getStandardRspecOpts() {
