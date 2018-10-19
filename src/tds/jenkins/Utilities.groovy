@@ -26,6 +26,10 @@ def deployApp(redisApp, redisAppEnv) {
   sh "REDIS_APP_ENV=${redisAppEnv} REDIS_APP=${redisApp} bash /usr/local/bin/deploy_app.sh"
 }
 
+def deployApplication(appId, appEnv, dockerImageName, dockerImageTag, probePath) {
+  sh "APP_ENV=${appEnv} APP_ID=${appId} DOCKER_IMAGE_NAME=${dockerImageName} DOCKER_IMAGE_TAG=${dockerImageTag} PROBE_PATH=${probePath} bash /usr/local/bin/deploy_application.sh"
+}
+
 def dockerContainerIp(container) {
   def result = sh(
     script: "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id,
