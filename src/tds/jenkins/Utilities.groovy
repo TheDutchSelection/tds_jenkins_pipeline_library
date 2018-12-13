@@ -32,7 +32,7 @@ def deployApplication(appId, appEnv, dockerImageName, dockerImageTag, probePath)
 
 def dockerContainerIp(container) {
   def result = sh(
-    script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' " + container.id,
+    script: "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id,
     returnStdout: true
   ).trim()
 
@@ -121,7 +121,7 @@ def runPostgresql(label) {
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :5432 -p :5432/udp'
   )
-  sleep(30) // give the database some time
+  sleep(5) // give the database some time
 
   return postgresqlContainer
 }
