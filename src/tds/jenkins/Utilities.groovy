@@ -32,7 +32,7 @@ def deployApplication(appId, appEnv, dockerImageName, dockerImageTag, probePath)
 
 def dockerContainerIp(container) {
   def result = sh(
-    script: "docker inspect --format '{{ .NetworkSettings.Gateway }}' " + container.id,
+    script: "docker inspect --format '{{ .NetworkSettings.IPAddress }}' " + container.id,
     returnStdout: true
   ).trim()
 
