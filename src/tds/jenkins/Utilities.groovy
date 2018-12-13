@@ -121,7 +121,7 @@ def runPostgresql(label) {
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :5432 -p :5432/udp'
   )
-  sleep(5) // give the database some time
+  sleep(30) // give the database some time
 
   return postgresqlContainer
 }
