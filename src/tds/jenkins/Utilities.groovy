@@ -87,6 +87,7 @@ def runElasticsearch(label) {
     '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
     '-e "HOST=0.0.0.0" ' +
     '-e "ES_JAVA_OPTS=-Xms1g -Xmx1g" ' +
+    '-e "NODE_DISK_TYPE=ssd" ' +
     '-e "NODE_NAME=test_node" ' +
     '-e "NODE_INGEST=true" ' +
     '-e "NODE_MASTER=true" ' +
