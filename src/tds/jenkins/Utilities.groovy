@@ -3,14 +3,10 @@ package tds.jenkins
 def buildDockerImage(registryAddress, name, tag, args = null) {
   def result = ''
 
-  if (args != null && args.length()>0) {
+  if (args != null && args.length() > 0) {
     result = docker.build(registryAddress + '/' + name + ':' + tag, args)
-    println "with args"
-    println result
   } else {
     result = docker.build(registryAddress + '/' + name + ':' + tag)
-    println "without args"
-    println result
   }
 
   return result
