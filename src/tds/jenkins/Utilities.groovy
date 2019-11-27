@@ -1,11 +1,7 @@
 package tds.jenkins
 
 def buildDockerImage(registryAddress, name, tag, args = null) {
-  if (!args?.trim()) {
-    def result = docker.build(registryAddress + '/' + name + ':' + tag)
-  } else {
-    def result = docker.build(registryAddress + '/' + name + ':' + tag, args)
-  }
+  def result = docker.build(registryAddress + '/' + name + ':' + tag)
 
   return result
 }
