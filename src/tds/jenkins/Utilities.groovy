@@ -28,8 +28,8 @@ def dockerRegistryName(registryAddress) {
   return 'http://' + registryAddress + '/'
 }
 
-def deployApplication(appId, appEnv, dockerImageName, dockerImageTag, probePath) {
-  sh "APP_ENV=${appEnv} APP_ID=${appId} DOCKER_IMAGE_NAME=${dockerImageName} DOCKER_IMAGE_TAG=${dockerImageTag} PROBE_PATH=${probePath} bash /usr/local/bin/deploy_application.sh"
+def deployApplication(appId, appEnv, dockerImageName, dockerImageTag, probePath, gracefullyKillWorkers) {
+  sh "APP_ENV=${appEnv} APP_ID=${appId} DOCKER_IMAGE_NAME=${dockerImageName} DOCKER_IMAGE_TAG=${dockerImageTag} PROBE_PATH=${probePath} GRACEFULLY_KILL_WORKERS=${gracefullyKillWorkers} bash /usr/local/bin/deploy_application.sh"
 }
 
 def dockerContainerIp(container) {
