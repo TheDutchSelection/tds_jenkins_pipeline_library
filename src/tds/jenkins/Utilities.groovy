@@ -85,24 +85,26 @@ def runElasticsearch(label) {
     '--ulimit memlock=-1:-1 ' +
     '--ulimit nofile=65536:65536 ' +
     '-e "CLUSTER_NAME=test" ' +
-    '-e "DATA_DIRECTORY=' + dataDirectory + '" ' +
-    '-e "EXPECTED_NUMBER_OF_NODES=1" ' +
-    '-e "HOST=0.0.0.0" ' +
+    '-e "DISCOVERY_TYPE=single-node" ' +
     '-e "ES_JAVA_OPTS=-Xms1g -Xmx1g" ' +
+    '-e "HOST=0.0.0.0" ' +
+    '-e "HTTP_PORT=9200" ' +
+    '-e "MAX_LOCAL_STORAGE_NODES=1" ' +
     '-e "NODE_DISK_TYPE=ssd" ' +
     '-e "NODE_NAME=test_node" ' +
-    '-e "NODE_INGEST=true" ' +
-    '-e "NODE_MASTER=true" ' +
-    '-e "NODE_DATA=true" ' +
-    '-e "MAX_LOCAL_STORAGE_NODES=1" ' +
-    '-e "MINIMUM_MASTER_NODES=1" ' +
-    '-e "MINIMUM_NUMBER_OF_NODES=1" ' +
+    '-e "NODE_ROLES=data, ingest, master, transform" ' +
     '-e "PATH_DATA=/home/elastic/data/data" ' +
     '-e "PATH_LOGS=/home/elastic/data/logs" ' +
     '-e "PATH_REPO=/home/elastic/data/backups" ' +
     '-e "PUBLISH_HOST=0.0.0.0" ' +
+    '-e "RECOVERY_AFTER_TIME=0m" ' +
+    '-e "REQUIRED_EXPLICIT_DESTRUCTIVE_NAMES=false" ' +
+    '-e "SECURITY_TRANSPORT_SSL_ENABLED=false" ' +
+    '-e "SECURITY_TRANSPORT_SSL_KEYSTORE_PATH=" ' +
+    '-e "SECURITY_TRANSPORT_SSL_TRUSTSTORE_PATH=" ' +
+    '-e "SUPERUSER_PASSWORD=simplepass" ' +
+    '-e "SUPERUSER_USERNAME=local" ' +
     '-e "TRANSPORT_PORT=9300" ' +
-    '-e "HTTP_PORT=9200" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :9200 -p :9200/udp'
   )
