@@ -16,6 +16,14 @@ def getElasticsearchImageTag() {
   return '7.15.1'
 }
 
+def getElasticsearchTestPassword() {
+  return 'simplepass'
+}
+
+def getElasticsearchTestUsername() {
+  return 'local'
+}
+
 def getPostgresqlImageName() {
   return 'thedutchselection/postgresql'
 }

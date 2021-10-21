@@ -99,11 +99,11 @@ def runElasticsearch(label) {
     '-e "PUBLISH_HOST=0.0.0.0" ' +
     '-e "RECOVERY_AFTER_TIME=0m" ' +
     '-e "REQUIRED_EXPLICIT_DESTRUCTIVE_NAMES=false" ' +
-    '-e "SUPERUSER_PASSWORD=simplepass" ' +
-    '-e "SUPERUSER_USERNAME=local" ' +
     '-e "SECURITY_TRANSPORT_SSL_ENABLED=false" ' +
     '-e "SECURITY_TRANSPORT_SSL_KEYSTORE_PATH=" ' +
     '-e "SECURITY_TRANSPORT_SSL_TRUSTSTORE_PATH=" ' +
+    '-e "SUPERUSER_PASSWORD=' + tdsJenkinsGlobals.elasticsearchTestPassword + '" ' +
+    '-e "SUPERUSER_USERNAME=' + tdsJenkinsGlobals.elasticsearchTestUsername + '" ' +
     '-e "TRANSPORT_PORT=9300" ' +
     '--volumes-from ' + dataContainer.id + ' ' +
     '-p :9200 -p :9200/udp'
