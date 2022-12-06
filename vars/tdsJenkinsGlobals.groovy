@@ -13,7 +13,7 @@ def getElasticsearchImageName() {
 }
 
 def getElasticsearchImageTag() {
-  return '7.15.1'
+  return '7.17.7'
 }
 
 def getElasticsearchTestPassword() {
